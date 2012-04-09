@@ -13,7 +13,9 @@
   octo.api = function() {
     var host  = 'https://api.github.com',
         limit,
-        remaining
+        remaining,
+        username,
+        password;
 
     function api() {}
 
@@ -54,7 +56,13 @@
           success: onsuccess,
           error: onerror,
           dataType: 'json',
-          data: data
+          data: data,
+          beforeSend: function(xhr) {
+            if(username && password) {
+              var b64 = window.btoa(username + ':' + password)
+              xhr.setRequestHeader("Authorization", "Basic " + b64)
+            }
+          }
         })
       }
 
@@ -135,6 +143,20 @@
 
     api.remaining = function() {
       return remaining;
+    }
+
+    api.username = function(v) {
+      if(!arguments.length) return username;
+      username = v
+
+      return api
+    }
+
+    api.password = function(v) {
+      if(!arguments.length) return password;
+      password = v
+
+      return api
     }
 
     return api

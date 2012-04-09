@@ -18,10 +18,11 @@
     function api() {}
 
     // pager
-    function pager(path) {
+    function pager(type, path, params) {
       var reuest,
           page = 1,
           perpage = 30,
+          data = {},
           events = {
             success: function() {},
             error: function() {}
@@ -40,11 +41,20 @@
           events.error.apply(this, arguments)
         }
 
+        if(type === 'get')
+          data = { page: page, per_page: perpage }
+        else if(type === 'delete')
+          data = null
+        else
+          data = JSON.stringify(params)
+
         $.ajax({
           url: api.host() + path,
+          type: type,
           success: onsuccess,
           error: onerror,
-          data: { page: page, per_page: perpage }
+          dataType: 'json',
+          data: data
         })
       }
 
@@ -91,7 +101,7 @@
     // Sets or gets the GitHub API host
     // Uses https://api.github.com by default
     //
-    //    var gh = octo.api().host('https://api.github.com')
+    //      var gh = octo.api().host('https://api.github.com')
     //
     api.host = function(val) {
       if(!arguments.length) return host
@@ -100,7 +110,23 @@
     }
 
     api.get = function(path) {
-      return new pager(path)
+      return new pager('get', path)
+    }
+
+    api.post = function(path, params) {
+      return new pager('post', path, params)
+    }
+
+    api.patch = function(path, params) {
+      return new pager('patch', path, params)
+    }
+
+    api.put = function(path, params) {
+      return new pager('put', path, params)
+    }
+
+    api.delete = function(path, params) {
+      return new pager('delete', path, params)
     }
 
     api.limit = function() {

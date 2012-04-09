@@ -15,7 +15,8 @@
         limit,
         remaining,
         username,
-        password;
+        password,
+        token
 
     function api() {}
 
@@ -58,7 +59,11 @@
           dataType: 'json',
           data: data,
           beforeSend: function(xhr) {
-            if(username && password) {
+            if(token) {
+              xhr.setRequestHeader("Authorization", "token " + token)
+            }
+
+            if(!token && username && password) {
               var b64 = window.btoa(username + ':' + password)
               xhr.setRequestHeader("Authorization", "Basic " + b64)
             }
@@ -155,6 +160,13 @@
     api.password = function(v) {
       if(!arguments.length) return password;
       password = v
+
+      return api
+    }
+
+    api.token = function(v) {
+      if(!arguments.length) return token;
+      token = v
 
       return api
     }

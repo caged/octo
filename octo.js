@@ -17,18 +17,32 @@
 
     // pager
     function pager(path) {
-      var page = 1
+      var page = 1,
+          perpage = 30,
+          events = {
+            success: function() {},
+            error: function() {}
+          }
 
       function pager() {
         $.ajax({
           url: api.host() + path,
-          data: { page: page }
+          success: events.success,
+          error: events.error,
+          data: { page: page, per_page: perpage }
         })
       }
 
       pager.page = function(v) {
         if(!arguments.length) return page
         page = v
+
+        return pager
+      }
+
+      pager.perpage = function(v) {
+        if(!arguments.length) return perpage
+        perpage = v
 
         return pager
       }
@@ -42,6 +56,11 @@
       pager.prev = function() {
         page -= 1
 
+        return pager
+      }
+
+      pager.on = function(event, callback) {
+        events[event] = callback
         return pager
       }
 

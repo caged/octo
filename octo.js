@@ -17,20 +17,25 @@
 
     // pager
     function pager(path) {
-      var page = 1,
+      var reuest,
+          page = 1,
           perpage = 30,
           events = {
             success: function() {},
             error: function() {}
           }
 
-      function pager() {
+      request = function() {
         $.ajax({
           url: api.host() + path,
           success: events.success,
           error: events.error,
           data: { page: page, per_page: perpage }
         })
+      }
+
+      function pager() {
+        request()
       }
 
       pager.page = function(v) {
@@ -49,12 +54,14 @@
 
       pager.next = function() {
         page += 1
+        request()
 
         return pager
       }
 
       pager.prev = function() {
         page -= 1
+        request()
 
         return pager
       }

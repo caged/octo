@@ -11,7 +11,9 @@
   //
   // Returns `api`
   octo.api = function() {
-    var host  = 'https://api.github.com'
+    var host  = 'https://api.github.com',
+        limit,
+        remaining
 
     function api() {}
 
@@ -26,10 +28,22 @@
           }
 
       request = function() {
+        var onsuccess = function(data, status, xhr) {
+          limit = ~~xhr.getResponseHeader('X-RateLimit-Limit')
+          remaining = ~~xhr.getResponseHeader('X-RateLimit-Remaining')
+          events.success.apply(this, arguments)
+        }
+
+        var onerror = function(data, status, xhr) {
+          limit = ~~xhr.getResponseHeader('X-RateLimit-Limit')
+          remaining = ~~xhr.getResponseHeader('X-RateLimit-Remaining')
+          events.error.apply(this, arguments)
+        }
+
         $.ajax({
           url: api.host() + path,
-          success: events.success,
-          error: events.error,
+          success: onsuccess,
+          error: onerror,
           data: { page: page, per_page: perpage }
         })
       }
@@ -87,6 +101,14 @@
 
     api.get = function(path) {
       return new pager(path)
+    }
+
+    api.limit = function() {
+      return limit
+    }
+
+    api.remaining = function() {
+      return remaining;
     }
 
     return api

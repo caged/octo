@@ -1,0 +1,31 @@
+<html>
+<head>
+  <title>octo.js example</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="../octo.js"></script>
+  <script type="text/javascript">
+    var gh = octo.api()
+    var events = gh.get('/events')
+    var uevents = gh.get('/users/caged/events/public')
+    events()
+    uevents.next().next()()
+    // PER PAGE NEEDS TO BE PER GET/POST REQUEST
+    // gh.get('/users').perpage('30').on('data', function() { })
+    // gh.get('/users').perpage('30')
+    //  .success(function() { })
+    //  .error(function() {})
+    // var u = gh.get('/events').perpage(30).on('success', function(d) {
+    //   console.log('THIS', this);
+    //   console.log('success, woot', arguments);
+    //   // if(u.page() < u.pages()) {
+    //   //   u.next()
+    //   // }
+    // })
+
+    // u()
+
+  </script>
+</head>
+<body>
+</body>
+</html>

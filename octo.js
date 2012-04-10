@@ -10,7 +10,7 @@
   //    })
   //
   // Returns `api`
-  octo.api = function() {
+  this.octo.api = function() {
     var host  = 'https://api.github.com',
         limit,
         remaining,

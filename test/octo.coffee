@@ -1,3 +1,5 @@
+octo = require('../octo.js')
+
 describe 'GitHub API', ->
-  it 'should do something', ->
-    [1,2,3].indexOf(4).should.equal(-1)
+  it 'should default host to github', ->
+    octo.api().host().should.equal('https://api.github.com')

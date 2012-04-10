@@ -1,0 +1,24 @@
+{
+  "name": "octo.js",
+  "version": "0.0.1",
+  "description": "Simple and highly flexible JavaScripti API for GitHub API v3",
+  "homepage": "http://github.com/caged/octo",
+  "keywords": ["github", "javascript", "api", "git"],
+  "repository": {
+    "type": "git",
+    "url": "FIX ME WHEN PUBLIC"
+  },
+  "author": {
+    "name": "Justin Palmer",
+    "url": "http://labratrevenge.com"
+  },
+  "devDependencies": {
+    "docco": "0.3.0",
+    "mocha": "1.0.1",
+    "should": "0.6.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  }
+}

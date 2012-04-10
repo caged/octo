@@ -32,18 +32,18 @@
           }
 
       request = function() {
-        var syncratelimit = function() {
+        var syncratelimit = function(xhr) {
           limit = ~~xhr.getResponseHeader('X-RateLimit-Limit')
           remaining = ~~xhr.getResponseHeader('X-RateLimit-Remaining')
         }
 
         var onsuccess = function(data, status, xhr) {
-          syncratelimit()
+          syncratelimit(xhr)
           events.success.apply(this, arguments)
         }
 
         var onerror = function(data, status, xhr) {
-          syncratelimit()
+          syncratelimit(xhr)
           events.error.apply(this, arguments)
         }
 

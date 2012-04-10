@@ -1,7 +1,5 @@
 (function() {
-  if(typeof this.octo === 'undefined')
-    this.octo = {}
-
+  var octo = {}
   // The main entry point for interacting with the GitHub API v3.
   //
   //    var gh = octo.api()
@@ -10,7 +8,7 @@
   //    })
   //
   // Returns `api`
-  this.octo.api = function() {
+  octo.api = function() {
     var host  = 'https://api.github.com',
         limit,
         remaining,
@@ -176,5 +174,10 @@
 
     return api
   }
+
+  if(typeof module !== 'undefined')
+    module.exports = octo
+  else
+    window.octo = octo
 
 }).call(this)

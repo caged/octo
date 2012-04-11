@@ -40,9 +40,9 @@
           events.success.apply(this, arguments)
         }
 
-        var onerror = function(data, status, xhr) {
+        var onerror = function(xhr, name, message) {
           syncratelimit(xhr)
-          events.error.apply(this, arguments)
+          events.error.apply(this, [name, message, xhr])
         }
 
         if(type === 'get')

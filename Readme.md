@@ -41,5 +41,5 @@ GitHub APIv3 allows you to programmatically fetch a token for use in scripts tha
 ```coffeescript
 api = octo.api().username('foo').password('bar')
 api.post('/authorizations', {note: 'my script', scopes: ['public_repo']})
-   .on('success', (data) -> console.log(data))
+   .on('success', (data) -> console.log(data))()
 ```

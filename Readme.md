@@ -28,12 +28,23 @@ One goal of octo.js was to make paging very simple.  Paging is built right into 
 
 ``` coffeescript
 events = api.get('/events').on('success', (data) ->
+  # the current page
+  events.page()
+
   # go to the next page
   events.next()
 
   # go to the previous page
   events.prev()
 )
+events()
+```
+
+What if you want to start on a different page and limit the number of results per page?
+
+```coffeescript
+# Start on page 5 only returning 10 results per page
+events = api.get('/events').page(5).perpage(10)
 ```
 
 ## Basic Auth

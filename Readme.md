@@ -16,9 +16,8 @@ api.get('/events').on('success', (data) ->
 ``` coffeescript
 events = api.get('/events').perpage(50)
   .on 'success', (data) ->
+    console.log api.limit()
     console.log events.page() #1
-  .on 'error', (name, msg, req) ->
-    console.log "Error: #{req.status} #{error} - #{msg}"
 
 events()
 ```
@@ -46,6 +45,16 @@ What if you want to start on a different page and limit the number of results pe
 # Start on page 5 only returning 10 results per page
 events = api.get('/events').page(5).perpage(10)
 ```
+
+## Callbacks
+Octo.js supports two callbacks through `on`: `"success"` and `"error"`.  These callbacks are registered per pager.  This makes it easy to use the same callbacks for each page you request.
+
+```coffeescript
+events = api.get('/events')
+  .on('success', (data) -> console.log(data))
+  .on('error', (name, msg, xhr) -> console.log(xhr.status, name, message))()
+```
+You can get access to the raw `xhr` object as the last arg of each callback.
 
 ## Basic Auth
 ``` coffeescript

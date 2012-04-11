@@ -54,6 +54,7 @@ api.get('/user').on('success', (u) -> console.log(u))()
 ```
 
 ## OAuth2
+If you've [registered your script or app](https://github.com/settings/applications/new) as an OAuth app, you can use your token to authenticate with the api.
 ```coffeescript
 api = octo.api().token('MY APP TOKEN')
 api.get('/user').on('success', (u) -> console.log(u))()
@@ -73,7 +74,6 @@ The GitHub API has a rate limit that's returned with the headers of every reques
 
 ```coffeescript
 api.get('/users/caged/repos').on('success', ->
-
   # Your limit per hour
   console.log api.limit()
 

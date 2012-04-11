@@ -46,7 +46,7 @@
         }
 
         if(type === 'get')
-          data = { page: page, per_page: perpage }
+          data = $.extend { page: page, per_page: perpage }, params
         else if(type === 'delete')
           data = null
         else
@@ -123,7 +123,7 @@
       return api
     }
 
-    api.get = function(path) {
+    api.get = function(path, params) {
       return new pager('get', path)
     }
 

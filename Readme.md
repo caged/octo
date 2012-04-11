@@ -23,6 +23,19 @@ events = api.get('/events').perpage(50)
 events()
 ```
 
+## Paging
+One goal of octo.js was to make paging very simple.  Paging is built right into the library.
+
+``` coffeescript
+events = api.get('/events').on('success', (data) ->
+  # go to the next page
+  events.next()
+
+  # go to the previous page
+  events.prev()
+)
+```
+
 ## Basic Auth
 ``` coffeescript
 api = octo.api().username('foo').password('bar')

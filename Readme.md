@@ -67,3 +67,16 @@ api = octo.api().username('foo').password('bar')
 api.post('/authorizations', {note: 'my script', scopes: ['public_repo']})
    .on('success', (data) -> console.log(data))()
 ```
+
+## Checking Rate limits
+The GitHub API has a rate limit that's returned with the headers of every request.  You can easily access this info to see your limit and how many requests you have left
+
+```coffeescript
+api.get('/users/caged/repos').on 'success', ->
+
+  # Your limit per hour
+  console.log api.limit()
+
+  # Amount you have remaining in that hour
+  console.log api.remaining()
+```

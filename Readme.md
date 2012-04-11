@@ -55,10 +55,13 @@ api.get('/user').on('success', (u) -> console.log(u))()
 
 ## OAuth2
 If you've [registered your script or app](https://github.com/settings/applications/new) as an OAuth app, you can use your token to authenticate with the api.
+
 ```coffeescript
 api = octo.api().token('MY APP TOKEN')
 api.get('/user').on('success', (u) -> console.log(u))()
 ```
+
+This will work with any registered OAuth application, but will return *unauthorized* if you've not registered your application with GitHub.
 
 ### Getting an OAuth 2 token from the API
 GitHub APIv3 allows you to programmatically fetch a token for use in scripts that might not be websites.  Grabbing an OAuth token **requires a username and password**.  Once you have a token, you can use it without a need for your username and password.

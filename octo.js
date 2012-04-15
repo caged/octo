@@ -46,7 +46,7 @@
         }
 
         if(type === 'get')
-          data = $.extend { page: page, per_page: perpage }, params
+          data = $.extend({ page: page, per_page: perpage }, params)
         else if(type === 'delete')
           data = null
         else

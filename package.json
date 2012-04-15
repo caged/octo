@@ -15,7 +15,8 @@
   "devDependencies": {
     "docco": "0.3.0",
     "mocha": "1.0.1",
-    "should": "0.6.0"
+    "should": "0.6.0",
+    "connect": "2.1.2"
   },
   "main": "index.js",
   "scripts": {

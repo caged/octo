@@ -2,6 +2,8 @@
 
 Octo.js is a simple, flexible, funtional JavaScript library for interaction with the GitHub API v3.  It supports Basic Auth, OAuth 2, and paging.
 
+**Currently requires jQuery or zepto**
+
 ## Quick Example
 
 ``` coffeescript

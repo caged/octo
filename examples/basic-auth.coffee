@@ -1,6 +1,10 @@
 # Basic Auth
+#    api = octo.api().username(user).password(pword)
+#    api.get('/user').on('success', (data) -> console.log data)()
+#
 $ ->
   uname = $('<input />')
+    .attr('type', 'text')
     .attr('name', 'user')
     .attr('placeholder', 'GitHub username...')
 

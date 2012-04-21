@@ -25,7 +25,6 @@
       var req =  superagent[method](api.host() + path),
           page = 1,
           perpage = 30,
-          data = {},
           events = {
             success: function() {},
             error: function() {},
@@ -44,17 +43,6 @@
           if(res.error) events.error.call(this, res)
         }
 
-        // if(method === 'get') {
-        //   data = { page: page, per_page: perpage }
-        //   for(var param in params)
-        //     data[param] = params[param]
-
-        // } else if(method === 'delete') {
-        //   data = null
-        // } else {
-        //   data = JSON.stringify(params)
-        // }
-
         if(token)
           req.set('Authorization', 'token ' + token)
 
@@ -63,28 +51,8 @@
 
         req
           .query({page: page, perpage: perpage})
-          .send(data)
+          .send(params)
           .end(complete)
-
-
-        // $.ajax({
-        //   url: api.host() + path,
-        //   type: type,
-        //   success: onsuccess,
-        //   error: onerror,
-        //   dataType: 'json',
-        //   data: data,
-        //   beforeSend: function(xhr) {
-        //     if(token) {
-        //       xhr.setRequestHeader("Authorization", "token " + token)
-        //     }
-
-        //     if(!token && username && password) {
-        //       var b64 = window.btoa(username + ':' + password)
-        //       xhr.setRequestHeader("Authorization", "Basic " + b64)
-        //     }
-        //   }
-        // })
       }
 
       function pager() {

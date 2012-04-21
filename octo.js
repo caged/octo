@@ -45,12 +45,16 @@
           events.error.apply(this, [name, message, xhr])
         }
 
-        if(type === 'get')
-          data = $.extend({ page: page, per_page: perpage }, params)
-        else if(type === 'delete')
+        if(type === 'get') {
+          data = { page: page, per_page: perpage }
+          for(var param in params)
+            data[param] = params[param]
+
+        } else if(type === 'delete') {
           data = null
-        else
+        } else {
           data = JSON.stringify(params)
+        }
 
         $.ajax({
           url: api.host() + path,

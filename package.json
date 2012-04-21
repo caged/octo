@@ -12,6 +12,10 @@
     "name": "Justin Palmer",
     "url": "http://labratrevenge.com"
   },
+  "dependencies": {
+    "superagent": "0.4.1"
+  },
+
   "devDependencies": {
     "docco": "0.3.0",
     "mocha": "1.0.1",

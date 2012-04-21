@@ -10,6 +10,8 @@
   // Returns `api`
   octo.api = function() {
     var host  = 'https://api.github.com',
+        agent = superagent,
+        request,
         limit,
         remaining,
         username,
@@ -19,61 +21,70 @@
     function api() {}
 
     // pager
-    function pager(type, path, params) {
-      var reuest,
+    function pager(method, path, params) {
+      var req =  superagent[method](api.host() + path),
           page = 1,
           perpage = 30,
           data = {},
           events = {
             success: function() {},
-            error: function() {}
+            error: function() {},
+            end: function() {}
           }
 
       request = function() {
-        var syncratelimit = function(xhr) {
-          limit = ~~xhr.getResponseHeader('X-RateLimit-Limit')
-          remaining = ~~xhr.getResponseHeader('X-RateLimit-Remaining')
+
+        var complete = function(res) {
+          limit = ~~res['x-ratelimit-limit']
+          remaining = ~~res['x-ratelimit-remaining']
+
+          events.end.call(this, res)
+
+          if(res.ok)    events.success.call(this, res)
+          if(res.error) events.error.call(this, res)
         }
 
-        var onsuccess = function(data, status, xhr) {
-          syncratelimit(xhr)
-          events.success.apply(this, arguments)
-        }
+        // if(method === 'get') {
+        //   data = { page: page, per_page: perpage }
+        //   for(var param in params)
+        //     data[param] = params[param]
 
-        var onerror = function(xhr, name, message) {
-          syncratelimit(xhr)
-          events.error.apply(this, [name, message, xhr])
-        }
+        // } else if(method === 'delete') {
+        //   data = null
+        // } else {
+        //   data = JSON.stringify(params)
+        // }
 
-        if(type === 'get') {
-          data = { page: page, per_page: perpage }
-          for(var param in params)
-            data[param] = params[param]
+        if(token)
+          req.set('Authorization', 'token ' + token)
 
-        } else if(type === 'delete') {
-          data = null
-        } else {
-          data = JSON.stringify(params)
-        }
+        if(!token && username && password)
+          req.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
 
-        $.ajax({
-          url: api.host() + path,
-          type: type,
-          success: onsuccess,
-          error: onerror,
-          dataType: 'json',
-          data: data,
-          beforeSend: function(xhr) {
-            if(token) {
-              xhr.setRequestHeader("Authorization", "token " + token)
-            }
+        req
+          .query({page: page, perpage: perpage})
+          .send(data)
+          .end(complete)
 
-            if(!token && username && password) {
-              var b64 = window.btoa(username + ':' + password)
-              xhr.setRequestHeader("Authorization", "Basic " + b64)
-            }
-          }
-        })
+
+        // $.ajax({
+        //   url: api.host() + path,
+        //   type: type,
+        //   success: onsuccess,
+        //   error: onerror,
+        //   dataType: 'json',
+        //   data: data,
+        //   beforeSend: function(xhr) {
+        //     if(token) {
+        //       xhr.setRequestHeader("Authorization", "token " + token)
+        //     }
+
+        //     if(!token && username && password) {
+        //       var b64 = window.btoa(username + ':' + password)
+        //       xhr.setRequestHeader("Authorization", "Basic " + b64)
+        //     }
+        //   }
+        // })
       }
 
       function pager() {

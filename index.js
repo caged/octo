@@ -5,12 +5,15 @@ highlight = require('highlight').Highlight
 
 connect()
   .use(connect.logger('dev'))
-  .use(connect.static('examples'))
+  .use(connect.static(__dirname + '/examples/ven'))
   .use(connect.static(__dirname))
   .use(connect.favicon())
-  .use(connect.directory(__dirname + '/examples'))
+  .use(connect.directory(__dirname + '/examples', {
+    filter: function(file) {
+      return (/\.coffee$/).test(file)
+    }}))
   .use(function(req, res, next) {
-    if(req.url.match(/\.(js|css|png|coffee|gif|svg)$/))
+    if(req.url.match(/\.(js|css|png|gif|svg)$/))
       return next()
 
     fs.readFile(__dirname + "/examples/layout.html", 'utf8', function(err, data) {

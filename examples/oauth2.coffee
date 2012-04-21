@@ -24,7 +24,7 @@ $ ->
       # Here is what matters.  The rest is boilerplate
       api = octo.api().token(tok)
       api.get('/user/repos')
-        .on('success', (data) -> console.log data)
-        .on('error', -> console.log arguments)()
+        .on('success', (res) -> console.log res.body)
+        .on('error', (res) -> console.log res.body)()
 
   $('#body').prepend(button).prepend(token)

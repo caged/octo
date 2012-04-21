@@ -1,5 +1,7 @@
 # Comment here
 api = octo.api()
-api.post('/some-nonexistent-resource').on('error', (name, msg, req) ->
-  console.log "#{req.status} ERROR. #{name}: #{msg}"
+api.post('/some-nonexistent-resource').on('error', (res) ->
+  console.log "OK: #{res.ok}"
+  console.log "ERROR: #{res.error}"
+  console.log "#{res.status} ERROR. #{res.body.message}"
 )()

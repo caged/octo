@@ -22,6 +22,6 @@ $ ->
 
       # Here is what matters.  The rest is boilerplate
       api = octo.api().username(user).password(pword)
-      api.get('/user').on('success', (data) -> console.log data)()
+      api.get('/user').on('end', (res) -> console.log res.body)()
 
   $(document.body).prepend(button).prepend(pass).prepend(uname)

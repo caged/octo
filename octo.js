@@ -29,10 +29,11 @@
       var req =  superagent[method](api.host() + path),
           page = 1,
           perpage = 30,
+          noop = function() {},
           events = {
-            success: function() {},
-            error: function() {},
-            end: function() {}
+            success: noop,
+            error: noop,
+            end: noop
           }
 
       request = function() {

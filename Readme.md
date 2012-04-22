@@ -1,6 +1,6 @@
 # Octo.js
 
-Octo.js is a simple, flexible, funtional JavaScript library for interaction with the GitHub API v3.  It supports Basic Auth, OAuth 2, and paging.
+Octo.js is a simple, flexible, funtional JavaScript library for interaction with the GitHub API v3.  It runs in NodeJS apps and the browser.  It supports Basic Auth, OAuth 2, and paging and more.
 
 **Currently requires jQuery or zepto**
 
@@ -8,8 +8,8 @@ Octo.js is a simple, flexible, funtional JavaScript library for interaction with
 
 ``` coffeescript
 api = octo.api()
-api.get('/events').on('success', (data) ->
-  console.log data
+api.get('/events').on('success', (res) ->
+  events = res.body
 )()
 ```
 
@@ -17,7 +17,7 @@ api.get('/events').on('success', (data) ->
 
 ``` coffeescript
 events = api.get('/events').perpage(50)
-  .on 'success', (data) ->
+  .on 'end', (res) ->
     console.log api.limit()
     console.log events.page() #1
 
@@ -28,7 +28,7 @@ events()
 One goal of octo.js was to make paging very simple.  Paging is built right into the library.
 
 ``` coffeescript
-events = api.get('/events').on('success', (data) ->
+events = api.get('/events').on('success', (res) ->
   # the current page
   events.page()
 
@@ -45,7 +45,7 @@ What if you want to start on a different page and limit the number of results pe
 
 ```coffeescript
 # Start on page 5 only returning 10 results per page
-events = api.get('/events').page(5).perpage(10)
+api.get('/events').page(5).perpage(10)()
 ```
 
 ## Callbacks
@@ -62,7 +62,7 @@ You can get access to the raw `xhr` object as the last arg of each callback.
 ## Basic Auth
 ``` coffeescript
 api = octo.api().username('foo').password('bar')
-api.get('/user').on('success', (u) -> console.log(u))()
+api.get('/user').on('success', (res) -> console.log(res.body))()
 ```
 
 ## OAuth2
@@ -70,7 +70,7 @@ If you've [registered your script or app](https://github.com/settings/applicatio
 
 ```coffeescript
 api = octo.api().token('MY APP TOKEN')
-api.get('/user').on('success', (u) -> console.log(u))()
+api.get('/user').on('success', (res) -> console.log(res.body))()
 ```
 
 This will work with any registered OAuth application, but will return *unauthorized* if you've not registered your application with GitHub.
@@ -81,7 +81,7 @@ GitHub APIv3 allows you to programmatically fetch a token for use in scripts tha
 ```coffeescript
 api = octo.api().username('foo').password('bar')
 api.post('/authorizations', {note: 'my script', scopes: ['public_repo']})
-   .on('success', (data) -> console.log(data))()
+   .on('success', (res) -> console.log(res.body))()
 ```
 
 ## Checking Rate limits

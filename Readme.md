@@ -1,6 +1,6 @@
 # Octo.js
 
-Octo.js is a simple, flexible, functional JavaScript library for interacting with [GitHub's v3 API](http://developer.github.com).  It runs in node.js apps and the browser.  It supports Basic Auth, OAuth 2, and paging and more.
+Octo.js is a simple, flexible, functional JavaScript library for interacting with [GitHub's v3 API](http://developer.github.com/v3).  It runs in node.js apps and the browser.  It supports Basic Auth, OAuth 2, and paging and more.
 
 **Requires [superagent](https://github.com/visionmedia/superagent)** &mdash; A lightweight library for supporting Ajax in the browser and HTTP in node.js.
 

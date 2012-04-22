@@ -1,7 +1,9 @@
 (function() {
 
-  if(typeof superagent === 'undefined' && require)
+  if(typeof superagent === 'undefined' && require) {
     superagent = require('superagent')
+    btoa = require('btoa')
+  }
 
   var octo = {}
   // The main entry point for interacting with the GitHub API v3.
@@ -47,7 +49,7 @@
           req.set('Authorization', 'token ' + token)
 
         if(!token && username && password)
-          req.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
+          req.set('Authorization', 'Basic ' + btoa(username + ':' + password))
 
         req
           .query({page: page, perpage: perpage})

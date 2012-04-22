@@ -1,8 +1,8 @@
 # Octo.js
 
-Octo.js is a simple, flexible, funtional JavaScript library for interaction with the GitHub API v3.  It runs in NodeJS apps and the browser.  It supports Basic Auth, OAuth 2, and paging and more.
+Octo.js is a simple, flexible, functional JavaScript library for interacting with [GitHub's v3 API](http://developer.github.com).  It runs in node.js apps and the browser.  It supports Basic Auth, OAuth 2, and paging and more.
 
-**Currently requires jQuery or zepto**
+**Requires [superagent](https://github.com/visionmedia/superagent)** &mdash; A lightweight library for supporting Ajax in the browser and HTTP in node.js.
 
 ## Quick Example
 
@@ -22,6 +22,27 @@ events = api.get('/events').perpage(50)
     console.log events.page() #1
 
 events()
+```
+
+## Using in the browser
+
+Download both [superagent](https://github.com/visionmedia/superagent) and octo.js and include them in the `<head>` of your document.
+
+``` html
+  <script src="superagent.js"></script>
+  <script src="octo.js"></script>
+```
+
+## Using in node.js
+Install using `npm`.
+
+``` shell
+npm install octo
+```
+Require octo in your node.js script
+
+```coffeescript
+octo = require 'octo'
 ```
 
 ## Paging

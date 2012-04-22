@@ -9,7 +9,7 @@ Octo.js is a simple, flexible, funtional JavaScript library for interaction with
 ``` coffeescript
 api = octo.api()
 api.get('/events').on('success', (res) ->
-  events = res.body
+  pubevents = res.body
 )()
 ```
 

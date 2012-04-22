@@ -53,10 +53,10 @@ events = api.get('/events').on('success', (res) ->
   # the current page
   events.page()
 
-  # go to the next page
+  # requests the next page
   events.next()
 
-  # go to the previous page
+  # requests the previous page
   events.prev()
 )
 events()

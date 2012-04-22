@@ -53,8 +53,9 @@ Octo.js supports two callbacks through `on`: `"success"` and `"error"`.  These c
 
 ```coffeescript
 events = api.get('/events')
-  .on('success', (data) -> console.log(data))
-  .on('error', (name, msg, xhr) -> console.log(xhr.status, name, message))()
+  .on('success', (res) -> console.log(res.body))
+  .on('error', (res) -> console.log(res.body))
+  .on('end', (res) -> console.log(res.body))()
 ```
 You can get access to the raw `xhr` object as the last arg of each callback.
 

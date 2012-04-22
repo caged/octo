@@ -1,4 +1,8 @@
 (function() {
+
+  if(typeof superagent === 'undefined' && require)
+    superagent = require('superagent')
+
   var octo = {}
   // The main entry point for interacting with the GitHub API v3.
   //

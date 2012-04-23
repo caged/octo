@@ -1,3 +1,10 @@
+
+/*!
+ * octo.js
+ * Copyright (c) 2012 Justin Palmer <justin@labratrevenge.com>
+ * MIT Licensed
+ */
+
 (function() {
 
   if(typeof superagent === 'undefined' && require) {
@@ -6,6 +13,7 @@
   }
 
   var octo = {}
+
   // The main entry point for interacting with the GitHub API v3.
   //
   //      var gh = octo.api()

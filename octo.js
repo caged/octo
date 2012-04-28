@@ -33,8 +33,7 @@
     function api() {}
 
     function pager(method, path, params) {
-      var req     = superagent[method](api.host() + path),
-          page    = 1,
+      var page    = 1,
           perpage = 30,
           noop    = function() {},
           events  = {
@@ -44,6 +43,8 @@
           }
 
       var request = function() {
+        var req = superagent[method](api.host() + path)
+
         var complete = function(res) {
           limit = ~~res['x-ratelimit-limit']
           remaining = ~~res['x-ratelimit-remaining']
@@ -53,14 +54,13 @@
           if(res.error) events.error.call(this, res)
         }
 
-        if(token)
-          req.set('Authorization', 'token ' + token)
+        if(token) req.set('Authorization', 'token ' + token)
 
         if(!token && username && password)
           req.set('Authorization', 'Basic ' + btoa(username + ':' + password))
 
         req
-          .query({page: page, perpage: perpage})
+          .query({page: page, per_page: perpage})
           .send(params)
           .end(complete)
       }

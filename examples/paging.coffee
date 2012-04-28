@@ -1,6 +1,5 @@
 api = octo.api()
 events = api.get('/events')
-  .set('User-Agent', 'octo.js')
   .perpage(10)
   .on 'end', (res) ->
     console.log "PAGE: #{events.page()}"

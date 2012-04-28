@@ -35,6 +35,8 @@
     function pager(method, path, params) {
       var page    = 1,
           perpage = 30,
+          hasnext = false,
+          hasprev = false,
           noop    = function() {},
           events  = {
             success: noop,
@@ -46,8 +48,12 @@
         var req = superagent[method](api.host() + path)
 
         var complete = function(res) {
-          limit = ~~res['x-ratelimit-limit']
-          remaining = ~~res['x-ratelimit-remaining']
+          limit = ~~res.header['x-ratelimit-limit']
+          remaining = ~~res.header['x-ratelimit-remaining']
+
+          var link = res.header['link']
+          hasnext = (/rel=\"next\"/i).test(link)
+          hasprev = (/rel=\"next\"/).test(link)
 
           events.end.call(this, res)
           if(res.ok)    events.success.call(this, res)
@@ -116,6 +122,16 @@
         request()
 
         return pager
+      }
+
+      // Determines if the server is reporting a next page of results
+      pager.hasnext = function() {
+        return hasnext;
+      }
+
+      // Determines if the server is reporting a previous page of results
+      pager.hasprev = function() {
+        return hasprev;
       }
 
       // Registers a callback for an event

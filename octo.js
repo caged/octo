@@ -37,6 +37,7 @@
           perpage = 30,
           hasnext = false,
           hasprev = false,
+          headers = {},
           noop    = function() {},
           events  = {
             success: noop,
@@ -66,6 +67,7 @@
           req.set('Authorization', 'Basic ' + btoa(username + ':' + password))
 
         req
+          .set(headers)
           .query({page: page, per_page: perpage})
           .send(params)
           .end(complete)
@@ -145,6 +147,11 @@
       // Returns a pager
       pager.on = function(event, callback) {
         events[event] = callback
+        return pager
+      }
+
+      pager.set = function(key, val) {
+        headers[key] = val
         return pager
       }
 

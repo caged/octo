@@ -38,12 +38,7 @@
           hasnext = false,
           hasprev = false,
           headers = {},
-          noop    = function() {},
-          events  = {
-            success: noop,
-            error: noop,
-            end: noop
-          }
+          callbacks = {}
 
       var request = function() {
         var req = superagent[method](api.host() + path)
@@ -56,9 +51,9 @@
           hasnext = (/rel=\"next\"/i).test(link)
           hasprev = (/rel=\"next\"/).test(link)
 
-          events.end.call(this, res)
-          if(res.ok)    events.success.call(this, res)
-          if(res.error) events.error.call(this, res)
+          pager.trigger('end', res)
+          if(res.ok)    pager.trigger('success', res)
+          if(res.error) pager.trigger('error', res)
         }
 
         if(token) req.set('Authorization', 'token ' + token)
@@ -146,7 +141,21 @@
       //
       // Returns a pager
       pager.on = function(event, callback) {
-        events[event] = callback
+        if (typeof callbacks[event] == 'undefined')
+          callbacks[event] = []
+
+        callbacks[event].push(callback)
+
+        return pager
+      }
+
+      pager.trigger = function(event, data) {
+        if (callbacks[event] instanceof Array) {
+          callbacks[event].forEach(function(callback) {
+            callback.call(pager, data)
+          })
+        }
+
         return pager
       }
 

@@ -8,7 +8,7 @@ api = octo.api().host('http://localhost:21202')
 app.get '/success', (req, res) -> res.end 'ending'
 app.get '/error',   (req, res) -> res.status(500).send('fail')
 
-describe 'Paging Requests', ->
+describe 'Request Events', ->
   describe 'when making a request', ->
 
     it 'should trigger a success callback when the status is in the 200 range', (done) ->

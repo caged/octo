@@ -13,7 +13,7 @@
     "url": "http://labratrevenge.com"
   },
   "dependencies": {
-    "superagent": "0.4.1",
+    "superagent": "0.4.2",
     "btoa": "*"
   },
 

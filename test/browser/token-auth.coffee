@@ -1,4 +1,4 @@
-octo = require '../octo'
+octo = require '../../octo'
 express = require 'express'
 app = express.createServer()
 
@@ -19,10 +19,13 @@ describe 'OAuth 2 Token Auth', ->
       api.token('farmerandthedale')
       api.get('/').on('end', (res) ->
         res.status.should.equal(200)
-        done())()
+        done()
+      )()
 
   describe 'when a token is username and password are all set', ->
-    it 'should prefer token auth', ->
+    it 'should prefer token auth', (done) ->
       api.username('omar').password('Stick-up man').token('farmerandthedale')
       api.get('/').on('end', (res) ->
-        res.status.should.equal(200))()
+        res.status.should.equal(200)
+        done()
+      )()

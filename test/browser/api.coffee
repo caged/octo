@@ -1,4 +1,4 @@
-octo = require '../octo.js'
+octo = require '../../octo'
 
 describe 'GitHub API', ->
   it 'should set a default host', ->

@@ -43,3 +43,4 @@ connect()
     res.end("<h1>404 - Not Found</h1>")
   })
  .listen(9292);
+ console.log('Examples available at http://localhost:9292');

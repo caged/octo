@@ -1,5 +1,6 @@
 octo = require '../../octo'
 express = require 'express'
+should = require 'should'
 app = express.createServer()
 app.listen(21202)
 
@@ -44,3 +45,31 @@ describe 'Request Events', ->
         res.status.should.equal(200)
         done()
       )()
+
+    it 'should remove a registered callback', (done) ->
+      cback = () ->
+        should.fail('Should have removed this callback')
+        done()
+
+      req = api.get('/success')
+        .on('success', cback)
+        .off('success', cback)
+        .on('success', () -> done())
+      req()
+
+
+    it 'should remove a registered callback and leave others of the same name intact', (done) ->
+      cback = () ->
+        should.fail('Should have removed this callback')
+        done()
+
+      cback2 = (res) ->
+        res.status.should.equal(200)
+        done()
+
+      req = api.get('/success')
+        .on('success', cback)
+        .on('success', cback2)
+        .off('success', cback)
+
+      req()

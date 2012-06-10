@@ -149,6 +149,20 @@
         return pager
       }
 
+      pager.off = function(event, callback) {
+        if (callbacks[event] instanceof Array) {
+          var cbacks = callbacks[event], i = 0
+          for (i; i < cbacks.length; i++) {
+            if (cbacks[i] === callback) {
+              cbacks.splice(i, 1)
+              break
+            }
+          }
+        }
+
+        return pager
+      }
+
       pager.trigger = function(event, data) {
         if (callbacks[event] instanceof Array) {
           callbacks[event].forEach(function(callback) {

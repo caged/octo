@@ -8,14 +8,13 @@ test:
 		--compilers coffee:coffee-script \
 		--require should \
 		--reporter $(REPORTER) \
-		--growl \
 		$(TESTS)
 
 test-server:
 	@coffee test/server
 
 octo.min.js: octo.js
-	uglifyjs $< > $@
+	uglifyjs -nm $< > $@
 
 clean:
 	rm -f octo.min.js

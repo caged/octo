@@ -149,6 +149,7 @@
         return pager
       }
 
+      // Unregisters a previously registered callback
       pager.off = function(event, callback) {
         if (callbacks[event] instanceof Array) {
           var cbacks = callbacks[event], i = 0
@@ -163,6 +164,7 @@
         return pager
       }
 
+      // Triggers a custom event
       pager.trigger = function(event, data) {
         if (callbacks[event] instanceof Array) {
           callbacks[event].forEach(function(callback) {
@@ -173,6 +175,7 @@
         return pager
       }
 
+      // Sets a request header
       pager.set = function(key, val) {
         headers[key] = val
         return pager

@@ -34,3 +34,13 @@ describe 'Request Events', ->
         res.status.should.equal(500)
         done()
       )()
+
+    it 'should register and fire multiple events of the same name', (done) ->
+      api.get('/success').on('success', (res) ->
+        res.status.should.equal(200)
+      )()
+
+      api.get('/success').on('success', (res) ->
+        res.status.should.equal(200)
+        done()
+      )()

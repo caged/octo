@@ -268,9 +268,9 @@
     return api
   }
 
-  if(typeof module !== 'undefined')
+  if("undefined" != typeof exports)
     module.exports = octo
   else
     window.octo = octo
 
-}).call(this)
+})()

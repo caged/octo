@@ -1,6 +1,6 @@
 {
-  "name": "octo.js",
-  "version": "0.0.1",
+  "name": "octo",
+  "version": "0.1.0",
   "description": "Simple and highly flexible JavaScripti API for GitHub API v3",
   "homepage": "http://github.com/caged/octo",
   "keywords": ["github", "javascript", "api", "git"],
@@ -26,7 +26,7 @@
     "highlight": "0.2.2",
     "express": "2.5.9"
   },
-  "main": "index.js",
+  "main": "index",
   "scripts": {
     "test": "make test"
   }

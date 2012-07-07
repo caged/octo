@@ -70,7 +70,7 @@ api.get('/events').page(5).perpage(10)()
 ```
 
 ## Callbacks
-Octo.js supports two callbacks through `on`: `"success"` and `"error"`.  These callbacks are registered per pager.  This makes it easy to use the same callbacks for each page you request.
+Octo.js supports three callbacks through `on`: `"success"`, `"error"` and `"end"`.  These callbacks are registered per pager.  This makes it easy to use the same callbacks for each page you request.
 
 ```coffeescript
 events = api.get('/events')

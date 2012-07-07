@@ -1,13 +1,12 @@
 octo = require '../../octo'
 express = require 'express'
 app = express.createServer()
+app.listen(21219)
 
-api = octo.api().host('http://localhost:21211')
+api = octo.api().host('http://localhost:21219')
 
 app.get '/', (req, res) ->
   res.end req.headers.sobotka
-
-app.listen(21211)
 
 describe 'Setting Request Headers', ->
   it 'should set request headers', (done) ->

@@ -1,3 +1,4 @@
+# runs in nodejs via coffee command: `coffee node`
 octo = require('../octo')
 
 api = octo.api()

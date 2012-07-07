@@ -5,7 +5,7 @@
 #
 # Creating a token with octo.js
 #    api = octo.api().username(user).password(pword)
-#    api.post('/authorizations', note: 'My cool script')
+#    api.post('/authorizations', note: 'My cool script', scopes: ["repo"])
 #      .on('success', (data) -> console.log data)()
 #
 $ ->
@@ -18,13 +18,19 @@ $ ->
   button = $('<input />')
     .attr('type', 'submit')
     .attr('value', 'Fetch Details')
-    .on 'click', ->
-      tok = token.val()
 
-      # Here is what matters.  The rest is boilerplate
-      api = octo.api().token(tok)
-      api.get('/user/repos')
-        .on('success', (res) -> console.log res.body)
-        .on('error', (res) -> console.log res.body)()
+  button.on 'click', () ->
+    tok = token.val()
+
+    # Here is what matters.  The rest is boilerplate
+    api = octo.api().token(tok)
+    repos = api.get('/user/repos')
+      .on('success', (res) ->
+        res.body.forEach (r) -> console.log r.name
+        repos.next() if repos.hasnext())
+      .on('error', (res) -> console.log res.body)
+
+    repos()
+
 
   $('#body').prepend(button).prepend(token)

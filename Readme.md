@@ -4,6 +4,8 @@ Octo.js is a simple, flexible, functional JavaScript library for interacting wit
 
 **Requires [superagent](https://github.com/visionmedia/superagent)** &mdash; A lightweight library for supporting Ajax in the browser and HTTP in node.js.
 
+All examples are written in [CoffeeScript](http://coffeescript.org), but Octo.js itself is written in JavaScript.
+
 ## Quick Example
 
 ``` coffeescript
@@ -69,8 +71,12 @@ What if you want to start on a different page and limit the number of results pe
 api.get('/events').page(5).perpage(10)()
 ```
 
-## Callbacks
-Octo.js supports three callbacks through `on`: `"success"`, `"error"` and `"end"`.  These callbacks are registered per pager.  This makes it easy to use the same callbacks for each page you request.
+## Events
+Octo.js supports three events: `"success"`, `"error"` and `"end"`.  These callbacks are registered per pager.  This makes it easy to use the same callbacks for each page you request.
+
+* *`success`* - Response status was in the 200 range
+* *`error`* - Response wasn't in the 200 range
+* *`end`* - Fired at the end of every request, regarldess of status.
 
 ```coffeescript
 events = api.get('/events')
@@ -78,7 +84,6 @@ events = api.get('/events')
   .on('error', (res) -> console.log(res.body))
   .on('end', (res) -> console.log(res.body))()
 ```
-You can get access to the raw `xhr` object as the last arg of each callback.
 
 ## Basic Auth
 ``` coffeescript

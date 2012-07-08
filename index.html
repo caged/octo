@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Octo by Caged</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Octo</h1>
+        <p>octo.js - JavaScript interface to GitHub API v3</p>
+
+        <p class="view"><a href="https://github.com/Caged/octo">View the Project on GitHub <small>Caged/octo</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/Caged/octo/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Caged/octo/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Caged/octo">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Octo.js</h1>
+
+<p>Octo.js is a simple, flexible, functional JavaScript library for interacting with <a href="http://developer.github.com/v3">GitHub's v3 API</a>.  It runs in node.js apps and the browser.  It supports Basic Auth, OAuth 2, pagination and more.</p>
+
+<p><strong>Requires <a href="https://github.com/visionmedia/superagent">superagent</a></strong> — A lightweight library for supporting Ajax in the browser and HTTP in node.js.</p>
+
+<p>All examples are written in <a href="http://coffeescript.org">CoffeeScript</a>, but Octo.js itself is written in JavaScript.</p>
+
+<h2>Quick Example</h2>
+
+<div class="highlight">
+<pre><span class="nv">api = </span><span class="nx">octo</span><span class="p">.</span><span class="nx">api</span><span class="p">()</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">'/events'</span><span class="p">).</span><span class="kc">on</span><span class="p">(</span><span class="s">'success'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span>
+  <span class="nv">pubevents = </span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span>
+<span class="p">)()</span>
+</pre>
+</div>
+
+
+<p><code>api.get</code> sets up a closure, so you'll need to invoke it before the request is sent.</p>
+
+<div class="highlight">
+<pre><span class="nv">events = </span><span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">'/events'</span><span class="p">).</span><span class="nx">perpage</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+  <span class="p">.</span><span class="kc">on</span> <span class="s">'end'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">api</span><span class="p">.</span><span class="nx">limit</span><span class="p">()</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">events</span><span class="p">.</span><span class="nx">page</span><span class="p">()</span> <span class="c1">#1</span>
+
+<span class="nx">events</span><span class="p">()</span>
+</pre>
+</div>
+
+
+<h2>Using in the browser</h2>
+
+<p>Download both <a href="https://github.com/visionmedia/superagent">superagent</a> and octo.js and include them in the <code>&lt;head&gt;</code> of your document.</p>
+
+<div class="highlight">
+<pre>  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"superagent.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"octo.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre>
+</div>
+
+
+<h2>Using in node.js</h2>
+
+<p>Install using <code>npm</code>.</p>
+
+<pre lang="shell"><code>npm install octo
+</code></pre>
+
+<p>Require octo in your node.js script</p>
+
+<div class="highlight">
+<pre><span class="nv">octo = </span><span class="nx">require</span> <span class="s">'octo'</span>
+</pre>
+</div>
+
+
+<h2>Paging</h2>
+
+<p>One goal of octo.js was to make paging very simple.  Paging is built right into the library.</p>
+
+<div class="highlight">
+<pre><span class="nv">events = </span><span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">'/events'</span><span class="p">).</span><span class="kc">on</span><span class="p">(</span><span class="s">'success'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span>
+  <span class="c1"># the current page</span>
+  <span class="nx">events</span><span class="p">.</span><span class="nx">page</span><span class="p">()</span>
+
+  <span class="c1"># requests the next page</span>
+  <span class="nx">events</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span>
+
+  <span class="c1"># requests the previous page</span>
+  <span class="nx">events</span><span class="p">.</span><span class="nx">prev</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="nx">events</span><span class="p">()</span>
+</pre>
+</div>
+
+
+<p>What if you want to start on a different page and limit the number of results per page?</p>
+
+<div class="highlight">
+<pre><span class="c1"># Start on page 5 only returning 10 results per page</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">'/events'</span><span class="p">).</span><span class="nx">page</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">perpage</span><span class="p">(</span><span class="mi">10</span><span class="p">)()</span>
+</pre>
+</div>
+
+
+<h2>Events</h2>
+
+<p>Octo.js supports three events: <code>"success"</code>, <code>"error"</code> and <code>"end"</code>.  These callbacks are registered per pager.  This makes it easy to use the same callbacks for each page you request.</p>
+
+<ul>
+<li>
+<em><code>success</code></em> - Response status was in the 200 range</li>
+<li>
+<em><code>error</code></em> - Response wasn't in the 200 range</li>
+<li>
+<em><code>end</code></em> - Fired at the end of every request, regarldess of status.</li>
+</ul><div class="highlight">
+<pre><span class="nv">events = </span><span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">'/events'</span><span class="p">)</span>
+  <span class="p">.</span><span class="kc">on</span><span class="p">(</span><span class="s">'success'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">))</span>
+  <span class="p">.</span><span class="kc">on</span><span class="p">(</span><span class="s">'error'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">))</span>
+  <span class="p">.</span><span class="kc">on</span><span class="p">(</span><span class="s">'end'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">))()</span>
+</pre>
+</div>
+
+
+<h2>Basic Auth</h2>
+
+<div class="highlight">
+<pre><span class="nv">api = </span><span class="nx">octo</span><span class="p">.</span><span class="nx">api</span><span class="p">().</span><span class="nx">username</span><span class="p">(</span><span class="s">'foo'</span><span class="p">).</span><span class="nx">password</span><span class="p">(</span><span class="s">'bar'</span><span class="p">)</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">'/user'</span><span class="p">).</span><span class="kc">on</span><span class="p">(</span><span class="s">'success'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">))()</span>
+</pre>
+</div>
+
+
+<h2>OAuth2</h2>
+
+<p>If you've <a href="https://github.com/settings/applications/new">registered your script or app</a> as an OAuth app, you can use your token to authenticate with the api.</p>
+
+<div class="highlight">
+<pre><span class="nv">api = </span><span class="nx">octo</span><span class="p">.</span><span class="nx">api</span><span class="p">().</span><span class="nx">token</span><span class="p">(</span><span class="s">'MY APP TOKEN'</span><span class="p">)</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">'/user'</span><span class="p">).</span><span class="kc">on</span><span class="p">(</span><span class="s">'success'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">))()</span>
+</pre>
+</div>
+
+
+<p>This will work with any registered OAuth application, but will return <em>unauthorized</em> if you've not registered your application with GitHub.</p>
+
+<h3>Getting an OAuth 2 token from the API</h3>
+
+<p>GitHub APIv3 allows you to programmatically fetch a token for use in scripts that might not be websites.  Grabbing an OAuth token <strong>requires a username and password</strong>.  Once you have a token, you can use it without a need for your username and password.</p>
+
+<div class="highlight">
+<pre><span class="nv">api = </span><span class="nx">octo</span><span class="p">.</span><span class="nx">api</span><span class="p">().</span><span class="nx">username</span><span class="p">(</span><span class="s">'foo'</span><span class="p">).</span><span class="nx">password</span><span class="p">(</span><span class="s">'bar'</span><span class="p">)</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s">'/authorizations'</span><span class="p">,</span> <span class="p">{</span><span class="nv">note: </span><span class="s">'my script'</span><span class="p">,</span> <span class="nv">scopes: </span><span class="p">[</span><span class="s">'public_repo'</span><span class="p">]})</span>
+   <span class="p">.</span><span class="kc">on</span><span class="p">(</span><span class="s">'success'</span><span class="p">,</span> <span class="nf">(res) -&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">))()</span>
+</pre>
+</div>
+
+
+<h2>Checking Rate limits</h2>
+
+<p>The GitHub API has a rate limit that's returned with the headers of every request.  You can easily access this info to see your limit and how many requests you have left</p>
+
+<div class="highlight">
+<pre><span class="nx">api</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">'/users/caged/repos'</span><span class="p">).</span><span class="kc">on</span><span class="p">(</span><span class="s">'success'</span><span class="p">,</span> <span class="o">-&gt;</span>
+  <span class="c1"># Your limit per hour</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">api</span><span class="p">.</span><span class="nx">limit</span><span class="p">()</span>
+
+  <span class="c1"># Amount you have remaining in that hour</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">api</span><span class="p">.</span><span class="nx">remaining</span><span class="p">()</span>
+<span class="p">)()</span>
+</pre>
+</div>
+
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Caged">Caged</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-7881178-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>

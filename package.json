@@ -2,7 +2,7 @@
   "name": "octo",
   "version": "0.1.0",
   "description": "Simple and highly flexible JavaScripti API for GitHub API v3",
-  "homepage": "http://github.com/caged/octo",
+  "homepage": "http://labratrevenge.com/octo",
   "keywords": ["github", "javascript", "api", "git"],
   "repository": {
     "type": "git",

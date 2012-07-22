@@ -122,3 +122,12 @@ api.get('/users/caged/repos').on('success', ->
   console.log api.remaining()
 )()
 ```
+
+### More examples
+
+There are some interactive examples in ./examples.  You can fire up the server to play with these:
+
+```
+node examples.js
+Examples available at http://localhost:9292
+```

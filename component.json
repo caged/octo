@@ -1,0 +1,8 @@
+{
+  "name": "octo",
+  "version": "0.1.0",
+  "main": "index",
+  "dependencies": {
+    "superagent": "0.4.2"
+  }
+}

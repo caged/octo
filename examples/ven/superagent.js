@@ -1,204 +1,21 @@
 
-/**
- * Module exports.
- */
-
-/**
- * Check if `obj` is an array.
- */
-
-function isArray(obj) {
-  return '[object Array]' == {}.toString.call(obj);
-}
-
-/**
- * Event emitter constructor.
- *
- * @api public.
- */
-
-function EventEmitter(){};
-
-/**
- * Adds a listener.
- *
- * @api public
- */
-
-EventEmitter.prototype.on = function (name, fn) {
-  if (!this.$events) {
-    this.$events = {};
-  }
-
-  if (!this.$events[name]) {
-    this.$events[name] = fn;
-  } else if (isArray(this.$events[name])) {
-    this.$events[name].push(fn);
-  } else {
-    this.$events[name] = [this.$events[name], fn];
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.addListener = EventEmitter.prototype.on;
-
-/**
- * Adds a volatile listener.
- *
- * @api public
- */
-
-EventEmitter.prototype.once = function (name, fn) {
-  var self = this;
-
-  function on () {
-    self.removeListener(name, on);
-    fn.apply(this, arguments);
-  };
-
-  on.listener = fn;
-  this.on(name, on);
-
-  return this;
-};
-
-/**
- * Removes a listener.
- *
- * @api public
- */
-
-EventEmitter.prototype.removeListener = function (name, fn) {
-  if (this.$events && this.$events[name]) {
-    var list = this.$events[name];
-
-    if (isArray(list)) {
-      var pos = -1;
-
-      for (var i = 0, l = list.length; i < l; i++) {
-        if (list[i] === fn || (list[i].listener && list[i].listener === fn)) {
-          pos = i;
-          break;
-        }
-      }
-
-      if (pos < 0) {
-        return this;
-      }
-
-      list.splice(pos, 1);
-
-      if (!list.length) {
-        delete this.$events[name];
-      }
-    } else if (list === fn || (list.listener && list.listener === fn)) {
-      delete this.$events[name];
-    }
-  }
-
-  return this;
-};
-
-/**
- * Removes all listeners for an event.
- *
- * @api public
- */
-
-EventEmitter.prototype.removeAllListeners = function (name) {
-  if (name === undefined) {
-    this.$events = {};
-    return this;
-  }
-
-  if (this.$events && this.$events[name]) {
-    this.$events[name] = null;
-  }
-
-  return this;
-};
-
-/**
- * Gets all listeners for a certain event.
- *
- * @api publci
- */
-
-EventEmitter.prototype.listeners = function (name) {
-  if (!this.$events) {
-    this.$events = {};
-  }
-
-  if (!this.$events[name]) {
-    this.$events[name] = [];
-  }
-
-  if (!isArray(this.$events[name])) {
-    this.$events[name] = [this.$events[name]];
-  }
-
-  return this.$events[name];
-};
-
-/**
- * Emits an event.
- *
- * @api public
- */
-
-EventEmitter.prototype.emit = function (name) {
-  if (!this.$events) {
-    return false;
-  }
-
-  var handler = this.$events[name];
-
-  if (!handler) {
-    return false;
-  }
-
-  var args = [].slice.call(arguments, 1);
-
-  if ('function' == typeof handler) {
-    handler.apply(this, args);
-  } else if (isArray(handler)) {
-    var listeners = handler.slice();
-
-    for (var i = 0, l = listeners.length; i < l; i++) {
-      listeners[i].apply(this, args);
-    }
-  } else {
-    return false;
-  }
-
-  return true;
-};
 /*!
  * superagent
- * Copyright (c) 2011 TJ Holowaychuk <tj@vision-media.ca>
+ * Copyright (c) 2012 TJ Holowaychuk <tj@vision-media.ca>
  * MIT Licensed
  */
 
-var superagent = function(exports){
+;(function(){
 
-  /**
-   * Expose the request function.
-   */
-
-  exports = request;
-
-  /**
-   * Library version.
-   */
-
-  exports.version = '0.3.0';
+  var Emitter = 'undefined' == typeof exports
+    ? EventEmitter
+    : require('emitter');
 
   /**
    * Noop.
    */
 
-  var noop = function(){};
+  function noop(){};
 
   /**
    * Determine XHR.
@@ -275,7 +92,7 @@ var superagent = function(exports){
    * Expose serialization method.
    */
 
-   exports.serializeObject = serialize;
+   request.serializeObject = serialize;
 
    /**
     * Parse the given x-www-form-urlencoded `str`.
@@ -304,7 +121,7 @@ var superagent = function(exports){
    * Expose parser.
    */
 
-  exports.parseString = parseString;
+  request.parseString = parseString;
 
   /**
    * Default MIME type map.
@@ -313,10 +130,11 @@ var superagent = function(exports){
    *
    */
 
-  exports.types = {
+  request.types = {
       html: 'text/html'
     , json: 'application/json'
     , urlencoded: 'application/x-www-form-urlencoded'
+    , 'form': 'application/x-www-form-urlencoded'
     , 'form-data': 'application/x-www-form-urlencoded'
   };
 
@@ -329,7 +147,7 @@ var superagent = function(exports){
    *
    */
 
-   exports.serialize = {
+   request.serialize = {
        'application/x-www-form-urlencoded': serialize
      , 'application/json': JSON.stringify
    };
@@ -343,7 +161,7 @@ var superagent = function(exports){
     *
     */
 
-  exports.parse = {
+  request.parse = {
       'application/x-www-form-urlencoded': parseString
     , 'application/json': JSON.parse
   };
@@ -499,7 +317,7 @@ var superagent = function(exports){
    */
 
   Response.prototype.parseBody = function(str){
-    var parse = exports.parse[this.type];
+    var parse = request.parse[this.type];
     return parse
       ? parse(str)
       : null;
@@ -547,13 +365,14 @@ var superagent = function(exports){
     this.unauthorized = 401 == status;
     this.notAcceptable = 406 == status;
     this.notFound = 404 == status;
+    this.forbidden = 403 == status;
   };
 
   /**
    * Expose `Response`.
    */
 
-  exports.Response = Response;
+  request.Response = Response;
 
   /**
    * Initialize a new `Request` with the given `method` and `url`.
@@ -565,7 +384,7 @@ var superagent = function(exports){
 
   function Request(method, url) {
     var self = this;
-    EventEmitter.call(this);
+    Emitter.call(this);
     this.method = method;
     this.url = url;
     this.header = {};
@@ -576,10 +395,10 @@ var superagent = function(exports){
   }
 
   /**
-   * Inherit from `EventEmitter.prototype`.
+   * Inherit from `Emitter.prototype`.
    */
 
-  Request.prototype = new EventEmitter;
+  Request.prototype = new Emitter;
   Request.prototype.constructor = Request;
 
   /**
@@ -614,7 +433,7 @@ var superagent = function(exports){
   };
 
   /**
-   * Set Content-Type to `type`, mapping values from `exports.types`.
+   * Set Content-Type to `type`, mapping values from `request.types`.
    *
    * Examples:
    *
@@ -636,7 +455,7 @@ var superagent = function(exports){
    */
 
   Request.prototype.type = function(type){
-    this.set('Content-Type', exports.types[type] || type);
+    this.set('Content-Type', request.types[type] || type);
     return this;
   };
 
@@ -698,6 +517,12 @@ var superagent = function(exports){
    *         .send({ name: 'tj' })
    *         .end(callback)
    *
+   *       // defaults to x-www-form-urlencoded
+    *      request.post('/user')
+    *        .send('name=tobi')
+    *        .send('species=ferret')
+    *        .end(callback)
+   *
    * @param {String|Object} data
    * @return {Request} for chaining
    * @api public
@@ -706,19 +531,29 @@ var superagent = function(exports){
   Request.prototype.send = function(data){
     if ('GET' == this.method) return this.query(data);
     var obj = isObject(data);
+    var type = this.header['content-type'];
 
     // merge
     if (obj && isObject(this._data)) {
       for (var key in data) {
         this._data[key] = data[key];
       }
+    } else if ('string' == typeof data) {
+      if (!type) this.type('form');
+      type = this.header['content-type'];
+      if ('application/x-www-form-urlencoded' == type) {
+        this._data = this._data
+          ? this._data + '&' + data
+          : data;
+      } else {
+        this._data = (this._data || '') + data;
+      }
     } else {
       this._data = data;
     }
 
     if (!obj) return this;
-    if (this.header['content-type']) return this;
-    this.type('json');
+    if (!type) this.type('json');
     return this;
   };
 
@@ -747,7 +582,7 @@ var superagent = function(exports){
 
     // querystring
     if (query) {
-      query = exports.serializeObject(query);
+      query = request.serializeObject(query);
       this.url += ~this.url.indexOf('?')
         ? '&' + query
         : '?' + query;
@@ -757,9 +592,9 @@ var superagent = function(exports){
     xhr.open(this.method, this.url, true);
 
     // body
-    if ('GET' != this.method && 'HEAD' != this.method) {
+    if ('GET' != this.method && 'HEAD' != this.method && 'string' != typeof data) {
       // serialize stuff
-      var serialize = exports.serialize[this.header['content-type']];
+      var serialize = request.serialize[this.header['content-type']];
       if (serialize) data = serialize(data);
     }
 
@@ -777,7 +612,7 @@ var superagent = function(exports){
    * Expose `Request`.
    */
 
-  exports.Request = Request;
+  request.Request = Request;
 
   /**
    * Issue a request:
@@ -860,6 +695,23 @@ var superagent = function(exports){
   };
 
   /**
+   * PATCH `url` with optional `data` and callback `fn(res)`.
+   *
+   * @param {String} url
+   * @param {Mixed} data
+   * @param {Function} fn
+   * @return {Request}
+   * @api public
+   */
+
+  request.patch = function(url, data, fn){
+    var req = request('PATCH', url);
+    if (data) req.send(data);
+    if (fn) req.end(fn);
+    return req;
+  };
+
+  /**
    * POST `url` with optional `data` and callback `fn(res)`.
    *
    * @param {String} url
@@ -893,6 +745,12 @@ var superagent = function(exports){
     return req;
   };
 
-  return exports;
+  // expose
 
-}({});
+  if ('undefined' == typeof exports) {
+    window.request = window.superagent = request;
+  } else {
+    module.exports = request;
+  }
+
+})();

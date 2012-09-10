@@ -1,6 +1,6 @@
 {
   "name": "octo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple and flexible JavaScripti API for GitHub API v3",
   "homepage": "http://labratrevenge.com/octo",
   "keywords": ["github", "javascript", "api", "git"],

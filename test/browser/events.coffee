@@ -1,7 +1,7 @@
 octo = require '../../octo'
 express = require 'express'
 should = require 'should'
-app = express.createServer()
+app = express()
 app.listen(21202)
 
 api = octo.api().host('http://localhost:21202')

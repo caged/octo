@@ -1,6 +1,6 @@
 {
   "name": "octo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple and flexible JavaScripti API for GitHub API v3",
   "homepage": "http://labratrevenge.com/octo",
   "keywords": ["github", "javascript", "api", "git"],
@@ -19,12 +19,12 @@
 
   "devDependencies": {
     "docco": "0.3.0",
-    "mocha": "1.0.1",
-    "should": "0.6.0",
-    "connect": "2.1.2",
+    "mocha": "1.7.4",
+    "should": "1.2.1",
+    "connect": "2.7.1",
     "coffee-script": "*",
     "highlight": "0.2.2",
-    "express": "2.5.9"
+    "express": "3.0.5"
   },
   "main": "index",
   "scripts": {

@@ -1,6 +1,6 @@
 octo = require '../../octo'
 express = require 'express'
-app = express.createServer()
+app = express()
 app.listen(21219)
 
 api = octo.api().host('http://localhost:21219')

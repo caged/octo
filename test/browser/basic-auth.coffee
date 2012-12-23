@@ -1,6 +1,6 @@
 octo = require '../../octo'
 express = require 'express'
-app = express.createServer()
+app = express()
 
 app.use(express.basicAuth('Clay', 'getdatmoney'))
 app.get '/', (req, res) -> res.end 'sheeeit'

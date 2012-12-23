@@ -21,10 +21,10 @@
     "docco": "0.3.0",
     "mocha": "1.7.4",
     "should": "1.2.1",
-    "connect": "2.1.2",
+    "connect": "2.7.1",
     "coffee-script": "*",
     "highlight": "0.2.2",
-    "express": "2.5.9"
+    "express": "3.0.5"
   },
   "main": "index",
   "scripts": {

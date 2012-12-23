@@ -1,6 +1,6 @@
 octo = require '../../octo'
 express = require 'express'
-app = express.createServer()
+app = express()
 
 app.get '/', (req, res) ->
   if req.header('authorization') == 'token farmerandthedale'

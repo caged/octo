@@ -8,29 +8,28 @@ All examples are written in [CoffeeScript](http://coffeescript.org), but Octo.js
 
 ## Quick Example
 
-``` coffeescript
+```coffeescript
 api = octo.api()
-api.get('/events').on('success', (res) ->
+do api.get('/events').on 'success', (res) ->
   pubevents = res.body
-)()
 ```
 
 `api.get` sets up a closure, so you'll need to invoke it before the request is sent.
 
-``` coffeescript
+```coffeescript
 events = api.get('/events').perpage(50)
   .on 'end', (res) ->
     console.log api.limit()
     console.log events.page() #1
 
-events()
+do events
 ```
 
 ## Using in the browser
 
 Download both [superagent](https://github.com/visionmedia/superagent) and octo.js and include them in the `<head>` of your document.
 
-``` html
+```html
   <script src="superagent.js"></script>
   <script src="octo.js"></script>
 ```
@@ -38,7 +37,7 @@ Download both [superagent](https://github.com/visionmedia/superagent) and octo.j
 ## Using in node.js
 Install using `npm`.
 
-``` shell
+```shell
 npm install octo
 ```
 Require octo in your node.js script
@@ -50,8 +49,8 @@ octo = require 'octo'
 ## Paging
 One goal of octo.js was to make paging very simple.  Paging is built right into the library.
 
-``` coffeescript
-events = api.get('/events').on('success', (res) ->
+```coffeescript
+events = api.get('/events').on 'success', (res) ->
   # the current page
   events.page()
 
@@ -60,15 +59,15 @@ events = api.get('/events').on('success', (res) ->
 
   # requests the previous page
   events.prev()
-)
-events()
+
+do events
 ```
 
 What if you want to start on a different page and limit the number of results per page?
 
 ```coffeescript
 # Start on page 5 only returning 10 results per page
-api.get('/events').page(5).perpage(10)()
+do api.get('/events').page(5).perpage(10)
 ```
 
 ## Events
@@ -79,16 +78,16 @@ Octo.js supports three events: `"success"`, `"error"` and `"end"`.  These callba
 * *`end`* - Fired at the end of every request, regarldess of status.
 
 ```coffeescript
-events = api.get('/events')
+do api.get('/events')
   .on('success', (res) -> console.log(res.body))
   .on('error', (res) -> console.log(res.body))
-  .on('end', (res) -> console.log(res.body))()
+  .on('end', (res) -> console.log(res.body))
 ```
 
 ## Basic Auth
 ``` coffeescript
 api = octo.api().username('foo').password('bar')
-api.get('/user').on('success', (res) -> console.log(res.body))()
+do api.get('/user').on 'success', (res) -> console.log res.body
 ```
 
 ## OAuth2
@@ -96,7 +95,7 @@ If you've [registered your script or app](https://github.com/settings/applicatio
 
 ```coffeescript
 api = octo.api().token('MY APP TOKEN')
-api.get('/user').on('success', (res) -> console.log(res.body))()
+do api.get('/user').on 'success', (res) -> console.log res.body
 ```
 
 This will work with any registered OAuth application, but will return *unauthorized* if you've not registered your application with GitHub.
@@ -106,28 +105,27 @@ GitHub APIv3 allows you to programmatically fetch a token for use in scripts tha
 
 ```coffeescript
 api = octo.api().username('foo').password('bar')
-api.post('/authorizations', {note: 'my script', scopes: ['public_repo']})
-   .on('success', (res) -> console.log(res.body))()
+do api.post('/authorizations', {note: 'my script', scopes: ['public_repo']})
+   .on 'success', (res) -> console.log res.body
 ```
 
 ## Checking Rate limits
 The GitHub API has a rate limit that's returned with the headers of every request.  You can easily access this info to see your limit and how many requests you have left
 
 ```coffeescript
-api.get('/users/caged/repos').on('success', ->
+do api.get('/users/caged/repos').on 'success', ->
   # Your limit per hour
   console.log api.limit()
 
   # Amount you have remaining in that hour
   console.log api.remaining()
-)()
 ```
 
 ### More examples
 
 There are some interactive examples in ./examples.  You can fire up the server to play with these:
 
-```
+```shell
 node examples.js
 Examples available at http://localhost:9292
 ```

@@ -1,4 +1,3 @@
-
 /*!
  * octo.js
  * Copyright (c) 2012 Justin Palmer <justin@labratrevenge.com>
@@ -8,8 +7,10 @@
 (function() {
 
   if(typeof superagent === 'undefined' && require) {
-    superagent = require('superagent')
-    btoa = require('btoa')
+    superagent = require('superagent');
+    if (if process !== undefined &&  process.execPath and process.execPath.indexOf('node') !== -1) {
+      btoa = require('btoa');
+    }
   }
 
   var octo = {}

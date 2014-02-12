@@ -1,4 +1,3 @@
-
 /*!
  * octo.js
  * Copyright (c) 2012 Justin Palmer <justin@labratrevenge.com>
@@ -37,7 +36,9 @@
           perpage = 30,
           hasnext = false,
           hasprev = false,
-          headers = {},
+          headers = {
+            'User-Agent': 'Octo.js'
+          },
           callbacks = {}
 
       var request = function() {

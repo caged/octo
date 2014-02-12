@@ -8,7 +8,7 @@
 
   if(typeof superagent === 'undefined' && require) {
     superagent = require('superagent');
-    if (process !== undefined &&  process.execPath and process.execPath.indexOf('node') !== -1) {
+    if (process !== undefined && process.execPath && process.execPath.indexOf('node') !== -1) {
       btoa = require('btoa');
     }
   }

@@ -38,7 +38,9 @@
           perpage = 30,
           hasnext = false,
           hasprev = false,
-          headers = {},
+          headers = {
+            'User-Agent': 'Octo.js'
+          },
           callbacks = {}
 
       var request = function() {

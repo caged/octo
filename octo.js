@@ -225,7 +225,7 @@
 
     // Initializes a DELETE request to GitHub API v3
     // Returns a pager
-    api.delete = function(path, params) {
+    api.del = function(path, params) {
       return new pager('delete', path, params)
     }
 

@@ -226,7 +226,7 @@
     // Initializes a DELETE request to GitHub API v3
     // Returns a pager
     api.del = function(path, params) {
-      return new pager('delete', path, params)
+      return new pager('del', path, params)
     }
 
     // Returns the API rate limit as reported by GitHub

@@ -45,6 +45,10 @@
         var req = superagent[method](api.host() + path)
 
         var complete = function(err, res) {
+          if (err) {
+            pager.trigger('error', err)
+            return
+          }
           limit = ~~res.header['x-ratelimit-limit']
           remaining = ~~res.header['x-ratelimit-remaining']
 
@@ -54,7 +58,6 @@
 
           pager.trigger('end', res)
           if(res.ok)    pager.trigger('success', res)
-          if(res.error) pager.trigger('error', res)
         }
 
         if(token) req.set('Authorization', 'token ' + token)

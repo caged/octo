@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "main": "octo.js",
   "dependencies": {
-    "visionmedia/superagent": "*"
+    "visionmedia/superagent": "0.21.0"
   },
   "scripts": [
     "octo.js"

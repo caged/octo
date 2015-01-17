@@ -44,7 +44,7 @@
       var request = function() {
         var req = superagent[method](api.host() + path)
 
-        var complete = function(res) {
+        var complete = function(err, res) {
           limit = ~~res.header['x-ratelimit-limit']
           remaining = ~~res.header['x-ratelimit-remaining']
 

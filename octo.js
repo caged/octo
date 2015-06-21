@@ -67,6 +67,7 @@
         req
           .set(headers)
           .query({page: page, per_page: perpage})
+          .timeout(3000)
           .send(params)
           .end(complete)
       }

@@ -38,7 +38,9 @@
           perpage = 30,
           hasnext = false,
           hasprev = false,
-          headers = {},
+          headers = {
+            'User-Agent': 'Octo.js'
+          },
           callbacks = {}
 
       var request = function() {
@@ -60,6 +62,10 @@
           if(res.ok)    pager.trigger('success', res)
         }
 
+        req.on('error', function (err) {
+          pager.trigger('error', err);
+        });
+
         if(token) req.set('Authorization', 'token ' + token)
 
         if(!token && username && password)
@@ -68,6 +74,7 @@
         req
           .set(headers)
           .query({page: page, per_page: perpage})
+          .timeout(3000)
           .send(params)
           .end(complete)
       }
@@ -226,8 +233,8 @@
 
     // Initializes a DELETE request to GitHub API v3
     // Returns a pager
-    api.delete = function(path, params) {
-      return new pager('delete', path, params)
+    api.del = function(path, params) {
+      return new pager('del', path, params)
     }
 
     // Returns the API rate limit as reported by GitHub

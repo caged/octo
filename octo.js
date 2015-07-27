@@ -59,6 +59,10 @@
           if(res.error) pager.trigger('error', res)
         }
 
+        req.on('error', function (err) {
+          pager.trigger('error', err);
+        });
+
         if(token) req.set('Authorization', 'token ' + token)
 
         if(!token && username && password)

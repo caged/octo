@@ -1,8 +1,11 @@
 {
   "name": "octo",
   "version": "0.2.1",
-  "main": "index",
+  "main": "octo.js",
   "dependencies": {
-    "superagent": "https://raw.github.com/Caged/octo/master/examples/ven/superagent.js"
-  }
+    "visionmedia/superagent": "0.21.0"
+  },
+  "scripts": [
+    "octo.js"
+  ]
 }

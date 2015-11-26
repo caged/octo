@@ -1,4 +1,3 @@
-
 /*!
  * octo.js
  * Copyright (c) 2012 Justin Palmer <justin@labratrevenge.com>
@@ -8,8 +7,10 @@
 (function() {
 
   if(typeof superagent === 'undefined' && require) {
-    superagent = require('superagent')
-    btoa = require('btoa')
+    superagent = require('superagent');
+    if (typeof process !== 'undefined' && process.execPath && process.execPath.indexOf('node') !== -1) {
+      btoa = require('btoa');
+    }
   }
 
   var octo = {}
@@ -37,13 +38,18 @@
           perpage = 30,
           hasnext = false,
           hasprev = false,
-          headers = {},
+          headers = {
+            'User-Agent': 'Octo.js'
+          },
           callbacks = {}
 
       var request = function() {
         var req = superagent[method](api.host() + path)
 
         var complete = function(res) {
+          if (pager._handledError) {
+            return;
+          }
           limit = ~~res.header['x-ratelimit-limit']
           remaining = ~~res.header['x-ratelimit-remaining']
 
@@ -53,8 +59,12 @@
 
           pager.trigger('end', res)
           if(res.ok)    pager.trigger('success', res)
-          if(res.error) pager.trigger('error', res)
         }
+
+        req.on('error', function (err) {
+          pager._handledError = err;
+          pager.trigger('error', err);
+        });
 
         if(token) req.set('Authorization', 'token ' + token)
 
@@ -64,6 +74,7 @@
         req
           .set(headers)
           .query({page: page, per_page: perpage})
+          .timeout(3000)
           .send(params)
           .end(complete)
       }
@@ -222,8 +233,8 @@
 
     // Initializes a DELETE request to GitHub API v3
     // Returns a pager
-    api.delete = function(path, params) {
-      return new pager('delete', path, params)
+    api.del = function(path, params) {
+      return new pager('del', path, params)
     }
 
     // Returns the API rate limit as reported by GitHub

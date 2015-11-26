@@ -46,10 +46,9 @@
       var request = function() {
         var req = superagent[method](api.host() + path)
 
-        var complete = function(err, res) {
-          if (err) {
-            pager.trigger('error', err)
-            return
+        var complete = function(res) {
+          if (pager._handledError) {
+            return;
           }
           limit = ~~res.header['x-ratelimit-limit']
           remaining = ~~res.header['x-ratelimit-remaining']
@@ -63,6 +62,7 @@
         }
 
         req.on('error', function (err) {
+          pager._handledError = err;
           pager.trigger('error', err);
         });
 
